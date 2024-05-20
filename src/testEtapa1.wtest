@@ -1,0 +1,87 @@
+import profesionales.*
+import universidades.*
+import empresas.*
+
+describe "Test universidad" {
+
+	test "universidad de San Martín: está en la provincia de Buenos Aires, los honorarios recomendados son de 3500 pesos." {
+		assert.equals("Buenos Aires", universidadDeSanMartin.provincia())
+		assert.equals(3500, universidadDeSanMartin.honorarios())
+	}
+
+	test "universidad de Rosario: está en la provincia de Santa Fe, los honorarios recomendados son de 2800 pesos." {
+		assert.equals("Santa Fe", universidadDeRosario.provincia())
+		assert.equals(2800, universidadDeRosario.honorarios())
+	}
+
+	test "universidad de Corrientes: está en la provincia de Corrientes, los honorarios recomendados son de 4200 pesos." {
+		assert.equals("Corrientes", universidadDeCorrientes.provincia())
+		assert.equals(4200, universidadDeCorrientes.honorarios())
+	}
+
+	test "universidad de Hurlingham: está en la provincia de Buenos Aires, los honorarios recomendados son de 8800 pesos." {
+		assert.equals("Buenos Aires", universidadDeHurlingham.provincia())
+		assert.equals(8800, universidadDeHurlingham.honorarios())
+	}
+
+}
+
+describe "test profesionales" {
+
+	test "Juana, vinculada, estudió en la Univ. de Rosario." {
+		juana.universidad(universidadDeRosario)
+		assert.equals(universidadDeRosario.honorarios(), juana.honorariosPorHora())
+		assert.equals(universidadDeRosario, juana.universidad())
+	}
+
+	test "Melina, asociada el Litoral, estudió en la Univ. de Corrientes." {
+		melina.universidad(universidadDeCorrientes)
+		assert.equals(3000, melina.honorariosPorHora())
+		assert.equals(universidadDeCorrientes, melina.universidad())
+	}
+
+	test "Rocío, libre, estudió en la Univ. de Hurlingham, honorarios 5000 pesos, puede trabajar en Santa Fe, Córdoba y Buenos Aires.." {
+		rocio.universidad(universidadDeHurlingham)
+		rocio.setHonorarios(3000)
+		assert.equals(3000, rocio.honorariosPorHora())
+		assert.equals(universidadDeHurlingham, rocio.universidad())
+	}
+
+	test "Luciana, libre, estudió en la Univ. de Rosario, honorarios 3200 pesos, puede trabajar en Santa Fe y Entre Ríos." {
+		luciana.universidad(universidadDeRosario)
+		luciana.setHonorarios(3000)
+		assert.equals(3000, luciana.honorariosPorHora())
+		assert.equals(universidadDeRosario, luciana.universidad())
+	}
+
+}
+
+describe "test empresas" {
+
+	method initialize() {
+		empresa1.contratarProfesional(rocio)
+		empresa1.contratarProfesional(luciana)
+		empresa1.contratarProfesional(melina)
+		empresa1.contratarProfesional(juana)
+	}
+
+	test"dos de sus profesionales estudiaron en Rosario, uno en Hurlingham, ninguno (o sea cero) en San Martín." {
+		assert.equals(4, empresa1.profesionales().size())
+		assert.equals(2, empresa1.catProfesionalesDe(universidadDeRosario))
+		assert.equals(1, empresa1.catProfesionalesDe(universidadDeHurlingham))
+	}
+
+	test"como profesionales caros, solamente a Rocío. ¡OJO! el método no va a devolver a Rocío, va a devolver una colección que tiene un solo elemento, que es Rocío." {
+		assert.equals(1, empresa1.conjProfesionalesCaros())
+	}
+
+	test"como universidades formadoras, a las de Rosario, Corrientes y Hurlingham." {
+		assert.equals(#{ universidadDeRosario, universidadDeHurlingham, universidadDeCorrientes }, empresa1.conjUniversidadesFormadoras())
+	}
+
+	test"como profesional más barato a Juana." {
+		assert.equals(juana, empresa1.profesionalMasBarato())
+	}
+
+}
+
