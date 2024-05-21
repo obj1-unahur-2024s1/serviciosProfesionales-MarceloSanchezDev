@@ -1,4 +1,5 @@
 import solicitantes.*
+
 class Empresa {
 
 	const profesionales = #{}
@@ -37,8 +38,9 @@ class Empresa {
 	method esDeGenteAcotada() {
 		return profesionales.all({ prof => !(prof.provinciasDondePuedeTrabajar().size() > 3) or (prof.provinciasDondePuedeTrabajar().size() == 3) })
 	}
-	method sePuedeSatisfacerSolicitante(solicitante){
-		return self.profesionales().any({prof => solicitante.puedeSerAtendido(prof)})
+
+	method sePuedeSatisfacerSolicitante(solicitante) {
+		return self.profesionales().any({ prof => solicitante.puedeSerAtendido(prof) })
 	}
 
 }

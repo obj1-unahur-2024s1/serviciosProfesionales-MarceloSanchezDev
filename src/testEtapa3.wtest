@@ -1,0 +1,42 @@
+import profesionales.*
+import solicitantes.*
+import universidades.*
+import empresas.*
+
+describe "Lo que hace cada profesional cuando cobra un importe, depende de qué tipo de profesional es, de acuerdo a estas reglas:" {
+
+	method initialize() {
+		juana.universidad(universidadDeRosario)
+		melina.universidad(universidadDeCorrientes)
+		rocio.universidad(universidadDeHurlingham)
+		luciana.universidad(universidadDeRosario)
+		rocio.setProvincias("Buenos Aires")
+		luciana.setProvincias("Buenos Aires")
+		club1.agregarProvincias(#{ "Buenos Aires", "Santa Fe", "Corrientes", "Entre Ríos" })
+		institucion1.agregarUniversidades(#{ universidadDeRosario, universidadDeHurlingham })
+	}
+
+	test "los profesionales vinculados le donan la mitad a la universidad, y la otra mitad la gastan 
+inmediatamente sin que quede registro en la aplicación. Hay que mantener el total recibido por donaciones de cada universidad." {
+		juana.cobrarDinero(2500)
+		assert.equals(1250,juana.dineroCobrado())
+	}
+
+	test "los profesionales asociados le dan todo lo que cobran a la Asociación de Profesionales del Litoral.
+ Agregar un objeto que represente a esta Asociación, que mantiene el total recaudado." {
+		melina.cobrarDinero(2500)
+		assert.equals(0,melina.dineroCobrado())
+		assert.equals(2500,asociacionDeProfesionales.dineroAcumulado())
+	}
+
+	test "los profesionales libres se guardan todo lo que cobran. Debe mantenerse el total recaudado por cada uno.
+Un profesional libre le puede pasar una cantidad X de dinero a otro: se resta X del total recaudado, y el otro cobra X." {
+		rocio.cobrarDinero(2500)
+		assert.equals(2500,rocio.dineroCobrado())
+		rocio.trasferirDinero(juana,1000)
+		assert.equals(1500,rocio.dineroCobrado())
+		assert.equals(1000,juana.dineroCobrado())
+	}
+
+}
+

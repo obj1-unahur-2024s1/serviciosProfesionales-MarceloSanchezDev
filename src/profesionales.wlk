@@ -3,14 +3,23 @@ import universidades.*
 // esta clase está completa, no necesita nada más
 class ProfesionalAsociado {
 
+	var dineroCobrado = 0
 	var universidad
 
 	method universidad() {
 		return universidad
 	}
 
+	method cobrarDinero(dinero) {
+		asociacionDeProfesionales.dineroDeProfesionales(dinero)
+	}
+
 	method universidad(univ) {
 		universidad = univ
+	}
+
+	method recibirTransferencia(cant) {
+		dineroCobrado += cant
 	}
 
 	method provinciasDondePuedeTrabajar() {
@@ -21,15 +30,29 @@ class ProfesionalAsociado {
 		return 3000
 	}
 
+	method dineroCobrado() {
+		return dineroCobrado
+	}
+
 }
 
 // a esta clase le faltan métodos
 class ProfesionalVinculado {
 
+	var dineroCobrado = 0
 	var universidad
 
 	method universidad() {
 		return universidad
+	}
+
+	method cobrarDinero(dinero) {
+		universidad.agregarDonaciones(dinero / 2)
+		dineroCobrado += dinero / 2
+	}
+
+	method recibirTransferencia(cant) {
+		dineroCobrado += cant
 	}
 
 	method universidad(univ) {
@@ -44,11 +67,16 @@ class ProfesionalVinculado {
 		return universidad.honorarios()
 	}
 
+	method dineroCobrado() {
+		return dineroCobrado
+	}
+
 }
 
 // a esta clase le faltan atributos y métodos
 class ProfesionalLibre {
 
+	var dineroCobrado = 0
 	var universidad
 	const provincias = #{}
 	var honorarios
@@ -57,8 +85,25 @@ class ProfesionalLibre {
 		return universidad
 	}
 
+	method dineroCobrado() {
+		return dineroCobrado
+	}
+
+	method cobrarDinero(dinero) {
+		dineroCobrado += dinero
+	}
+
 	method universidad(univ) {
 		universidad = univ
+	}
+
+	method trasferirDinero(prof, cant) {
+		prof.recibirTransferencia(cant)
+		dineroCobrado = dineroCobrado - cant
+	}
+
+	method recibirTransferencia(cant) {
+		dineroCobrado += cant
 	}
 
 	method setProvincias(prov) {
@@ -75,6 +120,20 @@ class ProfesionalLibre {
 
 	method honorariosPorHora() {
 		return honorarios
+	}
+
+}
+
+object asociacionDeProfesionales {
+
+	var dineroAcumulado = 0
+
+	method dineroAcumulado() {
+		return dineroAcumulado
+	}
+
+	method dineroDeProfesionales(dinero) {
+		dineroAcumulado += dinero
 	}
 
 }

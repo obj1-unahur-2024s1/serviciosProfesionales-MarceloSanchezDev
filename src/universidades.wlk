@@ -1,10 +1,13 @@
 class Universidad {
-
+	var totalDonaciones = 0
 	var provincia
 	var honorarios
 
 	method provincia() {
 		return provincia
+	}
+	method agregarDonaciones(donacion){
+		totalDonaciones += donacion
 	}
 
 	method provincia(prov) {
