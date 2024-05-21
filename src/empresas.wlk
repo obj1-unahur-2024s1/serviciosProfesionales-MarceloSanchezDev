@@ -1,33 +1,47 @@
+import solicitantes.*
 class Empresa {
+
 	const profesionales = #{}
-	var honorarios 
-	
-	method contratarProfesional(profesional){
+	var honorarios
+
+	method contratarProfesional(profesional) {
 		profesionales.add(profesional)
 	}
-	method profesionales(){
+
+	method profesionales() {
 		return profesionales
 	}
-	method honorarios(){
+
+	method honorarios() {
 		return honorarios
 	}
-	method catProfesionalesDe(universidad){
-		return profesionales.filter({prof => prof.universidad() == universidad}).size()
+
+	method catProfesionalesDe(universidad) {
+		return profesionales.filter({ prof => prof.universidad() == universidad }).size()
 	}
-	method conjProfesionalesCaros(){
-		const profesionalesCaros = profesionales.filter({prof => prof.honorariosPorHora() > self.honorarios()})
+
+	method conjProfesionalesCaros() {
+		const profesionalesCaros = profesionales.filter({ prof => prof.honorariosPorHora() > self.honorarios() })
 		return profesionalesCaros.asSet().size()
 	}
-	method conjUniversidadesFormadoras(){
-		const universidadesFormadoras = profesionales.map({prof => prof.universidad()})
+
+	method conjUniversidadesFormadoras() {
+		const universidadesFormadoras = profesionales.map({ prof => prof.universidad() })
 		return universidadesFormadoras.asSet()
 	}
-	method profesionalMasBarato(){
-		return profesionales.min({prof => prof.honorariosPorHora()})
+
+	method profesionalMasBarato() {
+		return profesionales.min({ prof => prof.honorariosPorHora() })
 	}
-	method esDeGenteAcotada(){
-		return profesionales.all({prof => !(prof.provinciasDondePuedeTrabajar().size() > 3) or (prof.provinciasDondePuedeTrabajar().size() == 3) })
+
+	method esDeGenteAcotada() {
+		return profesionales.all({ prof => !(prof.provinciasDondePuedeTrabajar().size() > 3) or (prof.provinciasDondePuedeTrabajar().size() == 3) })
 	}
+	method sePuedeSatisfacerSolicitante(solicitante){
+		return self.profesionales().any({prof => solicitante.puedeSerAtendido(prof)})
+	}
+
 }
 
 const empresa1 = new Empresa(honorarios = 3500)
+

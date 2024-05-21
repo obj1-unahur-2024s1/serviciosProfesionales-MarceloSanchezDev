@@ -1,0 +1,51 @@
+import profesionales.*
+import solicitantes.*
+import universidades.*
+import empresas.*
+
+describe "Los solicitantes pueden ser personas o instituciones o clubes. Nos interesa saber para cada solicitante si puede (o no) ser atendido por un profesional." {
+
+	method initialize() {
+		juana.universidad(universidadDeRosario)
+		melina.universidad(universidadDeCorrientes)
+		rocio.universidad(universidadDeHurlingham)
+		luciana.universidad(universidadDeRosario)
+		rocio.setProvincias("Buenos Aires")
+		luciana.setProvincias("Buenos Aires")
+		club1.agregarProvincias(#{ "Buenos Aires", "Santa Fe", "Corrientes", "Entre Ríos" })
+		institucion1.agregarUniversidades(#{ universidadDeRosario, universidadDeHurlingham })
+	}
+
+	test "De cada persona se debe indicar en qué provincia vive. Puede ser atendida por los profesionales que pueden trabajar en la provncia donde vive la persona." {
+		assert.equals("Santa Fe", persona1.provincia())
+		assert.that(persona1.puedeSerAtendido(juana))
+		assert.notThat(persona1.puedeSerAtendido(melina))
+		assert.notThat(persona1.puedeSerAtendido(rocio))
+		assert.notThat(persona1.puedeSerAtendido(luciana))
+	}
+
+	test "Cada institución tiene una lista de universidades que reconoce. Puede ser atendida por los profesionales que estudiaron en alguna de las universidades reconocidas por la institución." {
+		assert.equals(#{ universidadDeRosario, universidadDeHurlingham }, institucion1.universidades())
+		assert.that(institucion1.puedeSerAtendido(juana))
+		assert.notThat(institucion1.puedeSerAtendido(melina))
+		assert.that(institucion1.puedeSerAtendido(rocio))
+		assert.that(institucion1.puedeSerAtendido(luciana))
+	}
+
+	test "Un club puede estar en varias provincias. No nos interesa si es cede central o anexo, solo nos interesa saber en que provincias está y podrá ser atendido si al menos 1 profesional puede trabajar en alguna de las provincias donde está el club." {
+		assert.equals(#{ "Buenos Aires", "Santa Fe", "Corrientes", "Entre Ríos" }, club1.provincias())
+		assert.that(club1.puedeSerAtendido(juana))
+		assert.that(club1.puedeSerAtendido(melina))
+		assert.that(club1.puedeSerAtendido(luciana))
+		assert.that(club1.puedeSerAtendido(rocio))
+	}
+
+	test"A una empresa se le tiene que poder preguntar si puede satisfacer a un solicitante. La condición para esto es que el solicitante pueda ser atendido por, al menos, uno de los profesionales contratados por la empresa." {
+		empresa1.contratarProfesional(juana)
+		assert.that(empresa1.sePuedeSatisfacerSolicitante(persona1))
+		assert.that(empresa1.sePuedeSatisfacerSolicitante(institucion1))
+		assert.that(empresa1.sePuedeSatisfacerSolicitante(club1))
+	}
+
+}
+
