@@ -1,0 +1,27 @@
+import profesionales.*
+import solicitantes.*
+import universidades.*
+import empresas.*
+
+describe "" {
+
+	method initialize() {
+		juana.universidad(universidadDeRosario)
+		melina.universidad(universidadDeCorrientes)
+		rocio.universidad(universidadDeHurlingham)
+		luciana.universidad(universidadDeRosario)
+		rocio.setProvincias("Buenos Aires")
+		luciana.setProvincias("Buenos Aires")
+		club1.agregarProvincias(#{ "Buenos Aires", "Santa Fe", "Corrientes", "Entre Ríos" })
+		institucion1.agregarUniversidades(#{ universidadDeRosario, universidadDeHurlingham })
+	}
+
+	test "Poder preguntarle a una empresa, si dado un profesional, es poco atractivo para la empresa.
+	La condición es: si para cada provincia en la que puede trabajar el profesional, la empresa cuenta con otro que también puede cubrir esa provincia, y que cobra más barato." {
+		empresa1.contratarProfesional(juana)
+		empresa1.contratarProfesional(melina)
+		assert.notThat(empresa1.esProfesionalPocoAtractivo(rocio))
+	}
+
+}
+

@@ -28,7 +28,7 @@ const universidadDeSanMartin = new Universidad(provincia = "Buenos Aires", honor
 
 const universidadDeRosario = new Universidad(provincia = "Santa Fe", honorarios = 2800)
 
-const universidadDeCorrientes = new Universidad(provincia = "Corrientes", honorarios = 4200)
+const universidadDeCorrientes = new Universidad(provincia = "Corrientes", honorarios = 2200)
 
 const universidadDeHurlingham = new Universidad(provincia = "Buenos Aires", honorarios = 8800)
 

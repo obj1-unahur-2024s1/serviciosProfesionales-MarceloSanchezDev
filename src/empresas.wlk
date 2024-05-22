@@ -59,6 +59,10 @@ class Empresa {
 	method estaElCliente(cliente){
 		return serviciosASolicitantes.contains(cliente)
 	}
+	method esProfesionalPocoAtractivo(profesional){
+		const profesionalesConProvincias = profesionales.filter({prof => prof.provinciasDondePuedeTrabajar() == profesional.provinciasDondePuedeTrabajar()})
+		return  profesionalesConProvincias.any({prof => prof.honorariosPorHora() > profesional.honorariosPorHora()})
+	}
 
 }
 
