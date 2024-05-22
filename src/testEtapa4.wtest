@@ -1,0 +1,38 @@
+import profesionales.*
+import solicitantes.*
+import universidades.*
+import empresas.*
+
+describe "Agregar al modelo el registro de cada trabajo que una empresa de servicios hace para un determinado solicitante.
+ Para esto, agregarle a los objetos que representan empresas la capacidad de entender el mensaje darServicio" {
+
+	method initialize() {
+		juana.universidad(universidadDeRosario)
+		melina.universidad(universidadDeCorrientes)
+		rocio.universidad(universidadDeHurlingham)
+		luciana.universidad(universidadDeRosario)
+		rocio.setProvincias("Buenos Aires")
+		luciana.setProvincias("Buenos Aires")
+		club1.agregarProvincias(#{ "Buenos Aires", "Santa Fe", "Corrientes", "Entre Ríos" })
+		institucion1.agregarUniversidades(#{ universidadDeRosario, universidadDeHurlingham,universidadDeCorrientes, universidadDeSanMartin })
+		luciana.setHonorarios(2500)
+		rocio.setHonorarios(2500)
+		empresa1.contratarProfesional(luciana)
+		empresa1.contratarProfesional(rocio)
+	}
+
+	test "si el solicitante puede ser atendido (etapa 3), entonces elegir uno cualquiera de los profesionales que puede atenderlo, 
+hacer que ese profesional cobre (etapa 2) su honorario por hora (etapa 1), y agregar al solicitante al conjunto de clientes de la empresa." {
+		empresa1.darServicio(institucion1)
+		empresa1.darServicio(club1)
+		assert.that(empresa1.profesionales().any({ pro => pro.dineroCobrado() > 2500}))
+	}
+
+	test "Agregar la posibilidad de preguntarle a una empresa de servicios: cuántos clientes tiene, y si tiene o no como cliente a un determinado solicitante." {
+		empresa1.darServicio(club1)
+		empresa1.darServicio(institucion1)
+		assert.equals(2, empresa1.cantClientes())
+	}
+
+}
+

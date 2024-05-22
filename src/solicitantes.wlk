@@ -48,6 +48,6 @@ class Club {
 }
 
 const club1 = new Club()
-const persona1 = new Persona(provincia = "Santa Fe")
+const persona1 = new Persona(provincia = "Buenos Aires")
 const institucion1 = new Insitucion()
 
